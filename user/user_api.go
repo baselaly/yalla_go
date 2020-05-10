@@ -1,0 +1,39 @@
+package user
+
+import (
+	"net/http"
+	"yalla_go/jwt"
+
+	"github.com/gin-gonic/gin"
+)
+
+// API struct
+type API struct {
+	UserService Service
+}
+
+// ProvideUserAPI construct user api
+func ProvideUserAPI(UserService Service) API {
+	return API{UserService: UserService}
+}
+
+// Login API Function
+func (UserAPI *API) Login(c *gin.Context) {
+	email := c.PostForm("email")
+	password := c.PostForm("password")
+
+	user, err := UserAPI.UserService.Login(email, password)
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
+	}
+	JwtToken, err := jwt.CreateToken(user.ID)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user, "token": JwtToken})
+}
