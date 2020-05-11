@@ -17,18 +17,18 @@ func ProvideUserService(Repo Repository) Service {
 }
 
 // Login function
-func (u *Service) Login(email string, password string) (User, error) {
+func (u *Service) Login(email string, password string) (TransformedUser, error) {
 	credintials := make(map[string]string)
 	credintials["email"] = email
 	user, err := u.UserRepository.getUserBy(credintials)
 	if err != nil {
-		return User{}, err
+		return TransformedUser{}, err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return User{}, errors.New("Wrong Credentials")
+		return TransformedUser{}, errors.New("Wrong Credentials")
 	}
-
-	return user, nil
+	Tuser := user.TransformUser()
+	return Tuser, nil
 }

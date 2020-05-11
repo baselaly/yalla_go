@@ -5,19 +5,20 @@ import (
 	"log"
 	"math/rand"
 	"mime/multipart"
+	"yalla_go/nullsql"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 // User struct for user model
 type User struct {
-	ID        uint   `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Image     string `json:"image"`
-	Cover     string `json:"cover"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
+	ID        uint               `json:"id"`
+	FirstName string             `json:"first_name"`
+	LastName  string             `json:"last_name"`
+	Image     nullsql.NullString `json:"image"`
+	Cover     nullsql.NullString `json:"cover"`
+	Email     string             `json:"email"`
+	Password  string             `json:"password"`
 }
 
 // SetEmail to set email in model
@@ -88,12 +89,16 @@ func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) {
 		log.Fatalln(err)
 	}
 
-	u.Image = filename
+	u.Image = nullsql.NewNullString(filename)
 }
 
 // GetImage to get image for user
 func (u User) GetImage() string {
-	return "http://localhost:8080/uploads/users/" + u.Image
+	image := u.Image
+	if image.Valid {
+		return "http://localhost:8080/uploads/users/" + image.String
+	}
+	return "http://localhost:8080/uploads/users/profile.png"
 }
 
 // SetCover to upload user image and set the name
@@ -110,11 +115,14 @@ func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	u.Cover = filename
+	u.Cover = nullsql.NewNullString(filename)
 }
 
 // GetCover to get image for user
 func (u User) GetCover() string {
-	return "http://localhost:8080/uploads/users/" + u.Image
+	image := u.Cover
+	if image.Valid {
+		return "http://localhost:8080/uploads/users/" + image.String
+	}
+	return "http://localhost:8080/uploads/users/cover.png"
 }
