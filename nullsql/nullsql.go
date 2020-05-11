@@ -165,11 +165,11 @@ func (ns *NullString) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON for NullString
-func (ns *NullString) UnmarshalJSON(b []byte) error {
-	err := json.Unmarshal(b, &ns.String)
-	ns.Valid = (err == nil)
-	return err
-}
+// func (ns *NullString) UnmarshalJSON(b []byte) error {
+// 	err := json.Unmarshal(b, &ns.String)
+// 	ns.Valid = (err == nil)
+// 	return err
+// }
 
 // MarshalJSON for NullTime
 func (nt *NullTime) MarshalJSON() ([]byte, error) {

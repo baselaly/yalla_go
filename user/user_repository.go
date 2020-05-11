@@ -29,3 +29,21 @@ func (u *Repository) getUserBy(columns map[string]string) (User, error) {
 	}
 	return user, nil
 }
+
+// Create function to create user
+func (u *Repository) Create(user User) (int, error) {
+	stmt, err := u.DB.Prepare("INSERT INTO `users` (first_name,last_name,email,password,image,cover)VALUES (?,?,?,?,?,?)")
+	if err != nil {
+		return 0, err
+	}
+	rs, err := stmt.Exec(user.FirstName, user.LastName, user.Email, user.Password, user.Image.String, user.Cover.String)
+	if err != nil {
+		return 0, err
+	}
+	id, err := rs.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
+}

@@ -37,3 +37,22 @@ func (UserAPI *API) Login(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"user": user, "token": JwtToken})
 }
+
+// Register API Function
+func (UserAPI *API) Register(c *gin.Context) {
+	userID, err := UserAPI.UserService.Register(c)
+
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
+	}
+
+	JwtToken, err := jwt.CreateToken(uint(userID))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": JwtToken})
+}

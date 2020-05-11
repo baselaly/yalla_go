@@ -75,21 +75,27 @@ func RandomInt(min, max int) int {
 }
 
 // SetImage to upload user image and set the name
-func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) {
-	filename := RandomString(20)
-	path := "/uploads/users/" + filename
+func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error {
+	filename := RandomString(20) + ".jpg"
+	defer file.Close()
 
-	data, err := ioutil.ReadAll(file)
+	tempFile, err := ioutil.TempFile("uploads/users", filename)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
-	err = ioutil.WriteFile(path, data, 0777)
+	defer tempFile.Close()
+
+	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	tempFile.Write(fileBytes)
+
+	u.Cover = nullsql.NewNullString(filename)
 
 	u.Image = nullsql.NewNullString(filename)
+	return nil
 }
 
 // GetImage to get image for user
@@ -102,20 +108,25 @@ func (u User) GetImage() string {
 }
 
 // SetCover to upload user image and set the name
-func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) {
-	filename := RandomString(20)
-	path := "/uploads/users/" + filename
+func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error {
+	filename := RandomString(20) + ".jpg"
+	defer file.Close()
 
-	data, err := ioutil.ReadAll(file)
+	tempFile, err := ioutil.TempFile("uploads/users", filename)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
-	err = ioutil.WriteFile(path, data, 0777)
+	defer tempFile.Close()
+
+	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
+	tempFile.Write(fileBytes)
+
 	u.Cover = nullsql.NewNullString(filename)
+	return nil
 }
 
 // GetCover to get image for user
