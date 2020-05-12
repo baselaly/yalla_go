@@ -59,10 +59,14 @@ func (u *Service) Register(c *gin.Context) (int, error) {
 	if err != nil {
 		return 0, err
 	}
+	err = user.SetPassword(password)
+	if err != nil {
+		return 0, err
+	}
+
 	user.SetEmail(email)
 	user.SetFirstName(firstname)
 	user.SetLastName(lastname)
-	user.SetPassword(password)
 
 	id, err := u.UserRepository.Create(user)
 

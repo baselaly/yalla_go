@@ -2,7 +2,6 @@ package user
 
 import (
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"mime/multipart"
 	"yalla_go/nullsql"
@@ -52,12 +51,13 @@ func (u User) GetLastName() string {
 }
 
 // SetPassword to set password in model
-func (u *User) SetPassword(password string) {
+func (u *User) SetPassword(password string) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	u.Password = string(hash)
+	return nil
 }
 
 // RandomString Generate a random string of A-Z chars with len = l
@@ -91,8 +91,6 @@ func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error
 		return err
 	}
 	tempFile.Write(fileBytes)
-
-	u.Cover = nullsql.NewNullString(filename)
 
 	u.Image = nullsql.NewNullString(filename)
 	return nil
