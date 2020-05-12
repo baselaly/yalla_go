@@ -14,6 +14,7 @@ type TransformedUser struct {
 func (u User) TransformUser() TransformedUser {
 	var Tuser TransformedUser
 
+	Tuser.ID = u.ID
 	Tuser.Email = u.GetEmail()
 	Tuser.FirstName = u.GetFirstName()
 	Tuser.LastName = u.GetLastName()

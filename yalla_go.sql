@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2020 at 01:56 AM
+-- Generation Time: May 13, 2020 at 01:33 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.2.16
 
@@ -43,7 +43,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `image`, `cover`, `email`, `password`) VALUES
-(1, 'basel', 'aly', 'dhab2bjhabsdjsd.jpg', 'dasdasdsdad.jpg', 'basel.3ly@gmail.com', '$2a$14$/zzkbz8vFKUf8haXGZ5AMu1CZdSp.dyZLo7aJB/CyvOaHw4pmdQlK');
+(13, 'basel', 'aly', 'uploads\\users\\UQDIWWMNPPQIMGEGMGKB643670114.jpg', 'uploads\\users\\GMWJGSAPGATLMODYLUMG333385551.jpg', 'basel.3ly@gmail.com', '$2a$14$jbKMgoWk7tbBswWEp0XFfeoRO/OkqKM8M1lQVbEWg5TbpprU5HYbe');
 
 --
 -- Indexes for dumped tables
@@ -64,7 +64,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

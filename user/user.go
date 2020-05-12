@@ -76,7 +76,7 @@ func RandomInt(min, max int) int {
 
 // SetImage to upload user image and set the name
 func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error {
-	filename := RandomString(20) + ".jpg"
+	filename := RandomString(20) + "*.jpg"
 	defer file.Close()
 
 	tempFile, err := ioutil.TempFile("uploads/users", filename)
@@ -92,7 +92,7 @@ func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error
 	}
 	tempFile.Write(fileBytes)
 
-	u.Image = nullsql.NewNullString(filename)
+	u.Image = nullsql.NewNullString(tempFile.Name())
 	return nil
 }
 
@@ -100,14 +100,14 @@ func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error
 func (u User) GetImage() string {
 	image := u.Image
 	if image.Valid {
-		return "http://localhost:8080/uploads/users/" + image.String
+		return "http://localhost:8080/" + image.String
 	}
 	return "http://localhost:8080/uploads/users/profile.png"
 }
 
 // SetCover to upload user image and set the name
 func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error {
-	filename := RandomString(20) + ".jpg"
+	filename := RandomString(20) + "*.jpg"
 	defer file.Close()
 
 	tempFile, err := ioutil.TempFile("uploads/users", filename)
@@ -123,7 +123,7 @@ func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error
 	}
 	tempFile.Write(fileBytes)
 
-	u.Cover = nullsql.NewNullString(filename)
+	u.Cover = nullsql.NewNullString(tempFile.Name())
 	return nil
 }
 
@@ -131,7 +131,7 @@ func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error
 func (u User) GetCover() string {
 	image := u.Cover
 	if image.Valid {
-		return "http://localhost:8080/uploads/users/" + image.String
+		return "http://localhost:8080/" + image.String
 	}
 	return "http://localhost:8080/uploads/users/cover.png"
 }
