@@ -7,5 +7,6 @@ require (
 	github.com/gin-gonic/gin v1.6.3 // direct
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/google/wire v0.4.0 // direct
+	github.com/thedevsaddam/govalidator v1.9.10 // direct
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79 // direct
 )

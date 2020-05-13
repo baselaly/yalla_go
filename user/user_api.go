@@ -19,22 +19,24 @@ func ProvideUserAPI(UserService Service) API {
 
 // Login API Function
 func (UserAPI *API) Login(c *gin.Context) {
-	email := c.PostForm("email")
-	password := c.PostForm("password")
+	validationErrors := ValidateLoginRequest(c)
+	if len(validationErrors) != 0 {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"errors": validationErrors})
+		return
+	}
 
-	user, err := UserAPI.UserService.Login(email, password)
-
+	user, err := UserAPI.UserService.Login(c.PostForm("email"), c.PostForm("password"))
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
+
 	JwtToken, err := jwt.CreateToken(user.ID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"user": user, "token": JwtToken})
 }
 
