@@ -76,6 +76,14 @@ func RandomInt(min, max int) int {
 
 // SetImage to upload user image and set the name
 func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error {
+
+	// handle if there is no image sent, user image is optional
+	if file == nil && handle == nil {
+		u.Cover = nullsql.ToNullString("")
+		return nil
+	}
+
+	// upload user image if sent
 	filename := RandomString(20) + "*.jpg"
 	defer file.Close()
 
@@ -92,14 +100,14 @@ func (u *User) SetImage(file multipart.File, handle *multipart.FileHeader) error
 	}
 	tempFile.Write(fileBytes)
 
-	u.Image = nullsql.NewNullString(tempFile.Name())
+	u.Image = nullsql.ToNullString(tempFile.Name())
 	return nil
 }
 
 // GetImage to get image for user
 func (u User) GetImage() string {
 	image := u.Image
-	if image.Valid {
+	if image.Valid && len(image.String) > 0 {
 		return "http://localhost:8080/" + image.String
 	}
 	return "http://localhost:8080/uploads/users/profile.png"
@@ -107,6 +115,13 @@ func (u User) GetImage() string {
 
 // SetCover to upload user image and set the name
 func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error {
+	// handle if there is no cover sent, user cover is optional
+	if file == nil && handle == nil {
+		u.Cover = nullsql.ToNullString("")
+		return nil
+	}
+
+	// upload user cover if sent
 	filename := RandomString(20) + "*.jpg"
 	defer file.Close()
 
@@ -123,14 +138,14 @@ func (u *User) SetCover(file multipart.File, handle *multipart.FileHeader) error
 	}
 	tempFile.Write(fileBytes)
 
-	u.Cover = nullsql.NewNullString(tempFile.Name())
+	u.Cover = nullsql.ToNullString(tempFile.Name())
 	return nil
 }
 
 // GetCover to get image for user
 func (u User) GetCover() string {
 	image := u.Cover
-	if image.Valid {
+	if image.Valid && len(image.String) > 0 {
 		return "http://localhost:8080/" + image.String
 	}
 	return "http://localhost:8080/uploads/users/cover.png"

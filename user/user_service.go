@@ -41,25 +41,19 @@ func (u *Service) Register(c *gin.Context) (int, error) {
 	firstname := c.PostForm("first_name")
 	lastname := c.PostForm("last_name")
 	password := c.PostForm("password")
-	image, imageHeader, err := c.Request.FormFile("image")
-	if err != nil {
-		return 0, err
-	}
 
-	cover, coverHeader, err := c.Request.FormFile("cover")
+	err := user.SetPassword(password)
 	if err != nil {
 		return 0, err
 	}
-
-	err = user.SetCover(cover, coverHeader)
-	if err != nil {
-		return 0, err
-	}
+	image, imageHeader, _ := c.Request.FormFile("image")
 	err = user.SetImage(image, imageHeader)
 	if err != nil {
 		return 0, err
 	}
-	err = user.SetPassword(password)
+
+	cover, coverHeader, _ := c.Request.FormFile("cover")
+	err = user.SetCover(cover, coverHeader)
 	if err != nil {
 		return 0, err
 	}

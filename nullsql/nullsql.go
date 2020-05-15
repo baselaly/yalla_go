@@ -196,13 +196,10 @@ func (nt *NullTime) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// NewNullString convert empty string to null
-func NewNullString(s string) NullString {
-	if len(s) == 0 {
-		return NullString{}
-	}
+// ToNullString convert empty string to null
+func ToNullString(s string) NullString {
 	return NullString{
 		String: s,
-		Valid:  true,
+		Valid:  s != "",
 	}
 }
