@@ -42,10 +42,16 @@ func (UserAPI *API) Login(c *gin.Context) {
 
 // Register API Function
 func (UserAPI *API) Register(c *gin.Context) {
+	validationErrors := ValidateRegisterRequest(c)
+	if len(validationErrors) != 0 {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"errors": validationErrors})
+		return
+	}
+
 	userID, err := UserAPI.UserService.Register(c)
 
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
 
