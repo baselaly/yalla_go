@@ -3,6 +3,7 @@ package user
 import (
 	"net/http"
 	"yalla_go/jwt"
+	request "yalla_go/request"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +20,7 @@ func ProvideUserAPI(UserService Service) API {
 
 // Login API Function
 func (UserAPI *API) Login(c *gin.Context) {
-	validationErrors := ValidateLoginRequest(c)
+	validationErrors := request.ValidateLoginRequest(c)
 	if len(validationErrors) != 0 {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"errors": validationErrors})
 		return
@@ -42,7 +43,7 @@ func (UserAPI *API) Login(c *gin.Context) {
 
 // Register API Function
 func (UserAPI *API) Register(c *gin.Context) {
-	validationErrors := ValidateRegisterRequest(c)
+	validationErrors := request.ValidateRegisterRequest(c)
 	if len(validationErrors) != 0 {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{"errors": validationErrors})
 		return

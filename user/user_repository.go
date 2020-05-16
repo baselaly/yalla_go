@@ -32,7 +32,7 @@ func (u *Repository) getUserBy(columns map[string]string) (User, error) {
 
 // Create function to create user
 func (u *Repository) Create(user User) (int, error) {
-	stmt, err := u.DB.Prepare("INSERT INTO `users` (first_name,last_name,email,password,image,cover)VALUES (?,?,?,?,?,?)")
+	stmt, err := u.DB.Prepare("INSERT INTO `users` (first_name,last_name,email,password,image,cover) VALUES (?,?,?,?,?,?)")
 	if err != nil {
 		return 0, err
 	}
