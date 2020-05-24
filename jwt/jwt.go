@@ -60,10 +60,10 @@ func VerifyToken(c *gin.Context) (uint, error) {
 	tokenString := ExtractToken(c)
 
 	// Initialize a new instance of `Claims`
-	claims := &Claims{}
+	claims := Claims{}
 
 	// Parse the JWT string and store the result in `claims`.
-	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtKey, nil
 	})
 	if err != nil {
