@@ -2,6 +2,7 @@ package user
 
 import (
 	"net/http"
+	"strconv"
 	"yalla_go/jwt"
 	request "yalla_go/request"
 
@@ -72,6 +73,26 @@ func (UserAPI *API) GetProfile(c *gin.Context) {
 
 	user, err := UserAPI.UserService.GetUser(userID)
 
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": user})
+}
+
+// GetUserProfile to get user public profile
+func (UserAPI *API) GetUserProfile(c *gin.Context) {
+	id := c.Param("id")
+
+	u64, err := strconv.ParseUint(id, 10, 15)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	user, err := UserAPI.UserService.GetUser(uint(u64))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
 		return

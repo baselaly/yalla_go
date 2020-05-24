@@ -14,5 +14,6 @@ func Routes(route *gin.Engine, USERAPI API) {
 	private.Use(middleware.Auth())
 	public.POST("/login", USERAPI.Login)
 	public.POST("/register", USERAPI.Register)
+	public.GET("/profile/:id", USERAPI.GetUserProfile)
 	private.GET("/myprofile", USERAPI.GetProfile)
 }
