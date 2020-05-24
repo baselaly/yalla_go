@@ -27,7 +27,7 @@ func init() {
 
 		rows, err := db.Query("SELECT COUNT(*) FROM "+table+" WHERE "+field+" = ?", val)
 		if err != nil {
-			log.Fatalln(rows)
+			log.Fatalln(err)
 		}
 
 		for rows.Next() {
