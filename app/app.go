@@ -16,8 +16,9 @@ func Run() {
 		log.Fatalln(err)
 	}
 	defer connection.Close(db)
-	router := gin.Default()
+	app := gin.Default()
+	app.Group("/api")
 	UserAPI := InitUserApi(db)
-	user.Routes(router, UserAPI)
-	router.Run()
+	user.Routes(app, UserAPI)
+	app.Run()
 }

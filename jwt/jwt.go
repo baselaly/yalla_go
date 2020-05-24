@@ -1,9 +1,12 @@
 package jwt
 
 import (
+	"errors"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 // Claims We add as an embedded type in jwt token
@@ -38,4 +41,40 @@ func CreateToken(ID uint) (string, error) {
 		return "", err
 	}
 	return tokenString, nil
+}
+
+// ExtractToken to extract token from header
+func ExtractToken(c *gin.Context) string {
+	bearToken := c.Request.Header.Get("Authorization")
+	//normally Authorization the_token_xxx
+	strArr := strings.Split(bearToken, " ")
+	if len(strArr) == 2 {
+		return strArr[1]
+	}
+	return ""
+}
+
+// VerifyToken to verify token
+func VerifyToken(c *gin.Context) (uint, error) {
+	// Get the JWT string from the header
+	tokenString := ExtractToken(c)
+
+	// Initialize a new instance of `Claims`
+	claims := &Claims{}
+
+	// Parse the JWT string and store the result in `claims`.
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			return 0, err
+		}
+		return 0, err
+	}
+	if !token.Valid {
+		return 0, errors.New("unauthorized")
+	}
+
+	return claims.ID, nil
 }

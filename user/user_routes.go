@@ -6,7 +6,9 @@ import (
 
 // Routes generate routes for user
 func Routes(route *gin.Engine, USERAPI API) {
-	user := route.Group("/user")
-	user.POST("/login", USERAPI.Login)
-	user.POST("/register", USERAPI.Register)
+	public := route.Group("/user")
+	private := route.Group("/user")
+	public.POST("/login", USERAPI.Login)
+	public.POST("/register", USERAPI.Register)
+	private.GET("/myprofile", USERAPI.GetProfile)
 }

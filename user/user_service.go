@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -35,7 +36,7 @@ func (u *Service) Login(email string, password string) (TransformedUser, error) 
 }
 
 // Register to register user
-func (u *Service) Register(c *gin.Context) (int, error) {
+func (u *Service) Register(c *gin.Context) (uint, error) {
 	var user User
 	email := c.PostForm("email")
 	firstname := c.PostForm("first_name")
@@ -67,5 +68,17 @@ func (u *Service) Register(c *gin.Context) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	return id, nil
+
+	return uint(id), nil
+}
+
+// GetUser func to get single user
+func (u *Service) GetUser(ID uint) (TransformedUser, error) {
+	ByData := make(map[string]string)
+	ByData["id"] = strconv.FormatUint(uint64(ID), 10)
+	user, err := u.UserRepository.getUserBy(ByData)
+	if err != nil {
+		return TransformedUser{}, err
+	}
+	return user.TransformUser(), nil
 }
