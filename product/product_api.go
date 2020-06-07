@@ -18,5 +18,12 @@ func ProvideProductAPI(ProductService Service) API {
 
 // CreateProduct function to create product
 func (api *API) CreateProduct(c *gin.Context) {
+	err := api.ProductService.CreateProduct(c)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "success"})
 }
