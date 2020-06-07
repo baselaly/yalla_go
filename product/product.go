@@ -1,5 +1,6 @@
 package product
 
+// Product struct to Product Model
 type Product struct {
 	ID          uint   `json:"id"`
 	Name        string `json:"name"`
@@ -27,12 +28,12 @@ func (p *Product) GetDescription() string {
 	return p.Description
 }
 
-// SetDescription function to set description
+// SetUserID function to set user_id
 func (p *Product) SetUserID(userID uint) {
 	p.UserID = userID
 }
 
-// GetDescription function to get description
+// GetUserID function to get user_id
 func (p *Product) GetUserID() uint {
 	return p.UserID
 }
