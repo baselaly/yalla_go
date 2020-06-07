@@ -3,6 +3,7 @@ package app
 import (
 	"log"
 	connection "yalla_go/db"
+	"yalla_go/product"
 	"yalla_go/user"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,8 @@ func Run() {
 	app := gin.Default()
 	app.Group("/api")
 	UserAPI := InitUserApi(db)
+	ProductAPI := InitProductApi(db)
 	user.Routes(app, UserAPI)
+	product.Routes(app, ProductAPI)
 	app.Run()
 }

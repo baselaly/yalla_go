@@ -7,6 +7,7 @@ package app
 
 import (
 	"database/sql"
+	"yalla_go/product"
 	"yalla_go/user"
 )
 
@@ -16,5 +17,12 @@ func InitUserApi(db *sql.DB) user.API {
 	repository := user.ProvideUserRepository(db)
 	service := user.ProvideUserService(repository)
 	api := user.ProvideUserAPI(service)
+	return api
+}
+
+func InitProductApi(db *sql.DB) product.API {
+	repository := product.ProvideProductRepository(db)
+	service := product.ProvideProductService(repository)
+	api := product.ProvideProductAPI(service)
 	return api
 }
