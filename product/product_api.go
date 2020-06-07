@@ -2,6 +2,7 @@ package product
 
 import (
 	"net/http"
+	"yalla_go/request"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,6 +19,13 @@ func ProvideProductAPI(ProductService Service) API {
 
 // CreateProduct function to create product
 func (api *API) CreateProduct(c *gin.Context) {
+	validationErrors := request.ValidatePostProductRequest(c)
+
+	if len(validationErrors) != 0 {
+		c.JSON(http.StatusUnprocessableEntity, gin.H{"errors": validationErrors})
+		return
+	}
+
 	err := api.ProductService.CreateProduct(c)
 
 	if err != nil {
