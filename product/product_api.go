@@ -39,13 +39,6 @@ func (api *API) CreateProduct(c *gin.Context) {
 // GetProduct function to get single product
 func (api *API) GetProduct(c *gin.Context) {
 	id := c.Param("id")
-
-	// u64, err := strconv.ParseUint(id, 10, 15)
-
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-	// 	return
-	// }
 	product, err := api.ProductService.GetProduct(id)
 
 	if err != nil {
