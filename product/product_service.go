@@ -40,3 +40,18 @@ func (service *Service) CreateProduct(c *gin.Context) error {
 
 	return nil
 }
+
+// GetProduct function to get single product
+func (service *Service) GetProduct(ProductID string) (TransformedProduct, error) {
+	getBy := make(map[string]string)
+
+	getBy["id"] = ProductID
+
+	product, err := service.ProductRepository.GetProductBy(getBy)
+
+	if err != nil {
+		return TransformedProduct{}, err
+	}
+
+	return product.TransformProduct(), nil
+}

@@ -9,7 +9,8 @@ import (
 // Routes generate routes for products
 func Routes(route *gin.Engine, PRODUCTAPI API) {
 	private := route.Group("/product")
-
+	public := route.Group("/product")
 	private.Use(middleware.Auth())
 	private.POST("/post", PRODUCTAPI.CreateProduct)
+	public.GET("/:id", PRODUCTAPI.GetProduct)
 }
